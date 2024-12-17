@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mamazian <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/17 01:31:28 by mamazian          #+#    #+#             */
+/*   Updated: 2024/11/18 04:09:53 by mamazian         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 bool	check_line(t_tracker *tracker)
@@ -34,6 +46,7 @@ uint32_t	get_line_size(t_tracker *tracker)
 
 	if (!tracker)
 		return (0);
+	sz = 0;
 	while (tracker)
 	{
 		i = 0;
@@ -73,8 +86,7 @@ void	unite_wagon(t_tracker *tracker, char *wagon)
 	*wagon = 0;
 }
 
-void	free_wagons(t_tracker **tracker, t_tracker *fetch_wagon,
-			char *buffer)
+void	free_wagons(t_tracker **tracker, t_tracker *fish_wagon)
 {
 	t_tracker	*tmp;
 
@@ -88,11 +100,11 @@ void	free_wagons(t_tracker **tracker, t_tracker *fetch_wagon,
 		*tracker = tmp;
 	}
 	*tracker = NULL;
-	if (fetch_wagon->buffer[0])
-		*tracker = fetch_wagon;
-	else
+	if (fish_wagon && fish_wagon->buffer[0])
+		*tracker = fish_wagon;
+	else if (fish_wagon)
 	{
-		free(buffer);
-		free(fetch_wagon);
+		free(fish_wagon->buffer);
+		free(fish_wagon);
 	}
 }
